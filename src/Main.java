@@ -1,3 +1,7 @@
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+
 public class Main {
 
     public static final int NUMBER_OF_LINES = 2;
@@ -5,19 +9,19 @@ public class Main {
     public static void main(String[] args) throws IOException {
         BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
         int numberOfTrials = Integer.parseInt(in.readLine());
-        LemmingsEvolved game = new LemmingsEvolved(numberOfTrials, NUMBER_OF_LINES);
+        String[] totals = new String[numberOfTrials];
 
         //get the input for every line of Lemmings
-        for(int i = 0; i < numberOfTrials*NUMBER_OF_LINES; i++){
-            int numberOfLemmingsInCurrentRow = Integer.parseInt(in.readLine());
-            for (int l = 0; l < numberOfLemmingsInCurrentRow; l++) {
-                String[] lemming = in.readLine().split(" ");
-                Lemming lem = new Lemming(lemming[0], Integer.parseInt(lemming[1]));
-                game.fillLemming(lem, i, l);
+        for(int i = 0; i < numberOfTrials; i++){
+            LemmingsEvolved game = new LemmingsEvolved(numberOfTrials, NUMBER_OF_LINES);
+            for(int l = 0; l <NUMBER_OF_LINES; l++) {
+                int numberOfLemmingsInCurrentRow = Integer.parseInt(in.readLine());
+                for (int p = 0; p < numberOfLemmingsInCurrentRow; p++) {
+                    String[] lemming = in.readLine().split(" ");
+                    game.addLemming(l,p,lemming[0],Integer.parseInt(lemming[1]));
+                }
             }
-
-
+            System.out.println(game.total());
         }
-
     }
 }
