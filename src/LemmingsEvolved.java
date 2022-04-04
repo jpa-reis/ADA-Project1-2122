@@ -1,26 +1,37 @@
 public class LemmingsEvolved {
-    String[] line1Tribes;
-    long[] line1Powers;
 
-    String[] line2Tribes;
-    long[] line2Powers;
+    private char[] line1Tribes;
+    private long[] line1Powers;
 
-    long[][] tab;
+    private char[] line2Tribes;
+    private long[] line2Powers;
 
-    int firstLineSize;
-    int secondLineSize;
+    private long[][] maxScores;
+    private int[][] minPairs;
+
+    private int firstLineSize;
+    private int secondLineSize;
 
 
 
-    public LemmingsEvolved(int firstLineSize,int secondLineSize){
-        line1Tribes = new String[firstLineSize];
-        line1Powers = new long[firstLineSize];
-        line2Tribes = new String[secondLineSize];
-        line2Powers = new long[secondLineSize];
-        tab = new long[firstLineSize][secondLineSize];
+    public LemmingsEvolved(){
+
     }
 
-    public void addLemming(int lineNumber,int positionInLine, String tribe, long power){
+    public void initializeNRow(int line, int lineSize){
+        if(line == 0){
+            line1Tribes = new char[lineSize+1];
+            line1Powers = new long[lineSize+1];
+            firstLineSize = lineSize;
+        }
+        else{
+            line2Tribes = new char[lineSize+1];
+            line2Powers = new long[lineSize+1];
+            secondLineSize = lineSize;
+        }
+    }
+
+    public void addLemming(int lineNumber,int positionInLine, char tribe, long power){
         if(lineNumber == 0){
             line1Tribes[positionInLine] = tribe;
             line1Powers[positionInLine] = power;
@@ -31,7 +42,9 @@ public class LemmingsEvolved {
         }
     }
 
-    private void fillMatrix(){
+    public void solveProblem(){
+        maxScores = new long[firstLineSize+1][secondLineSize+1];
+        minPairs = new int[firstLineSize+1][secondLineSize+1];
         /*
         -----------------------------------------
         For case x = 0 and y = 0 the result is 0
@@ -40,21 +53,40 @@ public class LemmingsEvolved {
         */
 
 
-        for(int l = 1; l < firstLineSize; l++){
-            for(int c = 1; c < secondLineSize; c++) {
-                long maxPower = Math.max(tab[l - 1][c], tab[l][c - 1]);
-                if(line1Tribes[l].equals(line2Tribes[c])){
-                    maxPower = Math.max(maxPower, line1Powers[l]+line2Powers[c]+tab[l-1][c-1]);
+        for(int l = 1; l <= firstLineSize; l++){
+            for(int c = 1; c <= secondLineSize; c++) {
+                //fill score matrix
+                long maxPower = Math.max(maxScores[l - 1][c], maxScores[l][c - 1]);
+                if(line1Tribes[l] == line2Tribes[c]){
+                    maxPower = Math.max(maxPower, line1Powers[l]+line2Powers[c]+ maxScores[l-1][c-1]);
                 }
-                tab[l][c]=maxPower;
+                maxScores[l][c]=maxPower;
+
+
+                //fill min pair matrix
+                if(maxScores[l-1][c] == maxScores[l][c] && maxScores[l][c-1] == maxScores[l][c]){
+                    minPairs[l][c] = Math.min(minPairs[l-1][c], minPairs[l][c-1]);
+                }
+                else if(maxScores[l-1][c] != maxScores[l][c] && maxScores[l][c-1] != maxScores[l][c]){
+                    minPairs[l][c] = minPairs[l-1][c-1] + 1;
+                }
+                else if(maxScores[l-1][c] != maxScores[l][c] && maxScores[l][c-1] == maxScores[l][c]){
+                    minPairs[l][c] = minPairs[l][c-1];
+                }
+                else{
+                    minPairs[l][c] = minPairs[l-1][c];
+                }
+
             }
         }
 
     }
 
-    public long total(){
-        fillMatrix();
-        return tab[firstLineSize-1][secondLineSize];
+    public long maxScore(){
+        return maxScores[firstLineSize][secondLineSize];
+    }
+    public long minPairs(){
+        return minPairs[firstLineSize][secondLineSize];
     }
 
 }
