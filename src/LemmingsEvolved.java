@@ -55,6 +55,7 @@ public class LemmingsEvolved {
 
         for(int l = 1; l <= firstLineSize; l++){
             for(int c = 1; c <= secondLineSize; c++) {
+
                 //fill score matrix
                 long maxPower = Math.max(maxScores[l - 1][c], maxScores[l][c - 1]);
                 if(line1Tribes[l] == line2Tribes[c]){
@@ -64,17 +65,21 @@ public class LemmingsEvolved {
 
 
                 //fill min pair matrix
-                if(maxScores[l-1][c] == maxScores[l][c] && maxScores[l][c-1] == maxScores[l][c]){
-                    minPairs[l][c] = Math.min(minPairs[l-1][c], minPairs[l][c-1]);
-                }
-                else if(maxScores[l-1][c] != maxScores[l][c] && maxScores[l][c-1] != maxScores[l][c]){
-                    minPairs[l][c] = minPairs[l-1][c-1] + 1;
-                }
-                else if(maxScores[l-1][c] != maxScores[l][c] && maxScores[l][c-1] == maxScores[l][c]){
-                    minPairs[l][c] = minPairs[l][c-1];
+                if(maxScores[l-1][c] == maxScores[l][c]){
+                    if(maxScores[l][c-1] == maxScores[l][c]){
+                        minPairs[l][c] = Math.min(minPairs[l-1][c], minPairs[l][c-1]);
+                    }
+                    else{
+                        minPairs[l][c] = minPairs[l-1][c];
+                    }
                 }
                 else{
-                    minPairs[l][c] = minPairs[l-1][c];
+                    if(maxScores[l][c-1] == maxScores[l][c]){
+                        minPairs[l][c] = minPairs[l][c-1];
+                    }
+                    else{
+                        minPairs[l][c] = minPairs[l-1][c-1] + 1;
+                    }
                 }
 
             }
