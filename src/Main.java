@@ -1,3 +1,12 @@
+/**
+ * ADA First Project - Lemmings Evolved
+ * @author Joao Tiago Duarte dos Santos 57957
+ * @author Joao Pedro Araujo dos Reis 58175
+ */
+
+import LemmingsEvolved.LemmingsEvolved;
+import LemmingsEvolved.LemmingsEvolvedClass;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -10,9 +19,12 @@ public class Main {
         BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
         int numberOfTrials = Integer.parseInt(in.readLine());
 
-        //get the input for every trial
+        //Each trial is computed one at a time
         for(int i = 0; i < numberOfTrials; i++){
-            LemmingsEvolved game = new LemmingsEvolved();
+
+            LemmingsEvolved game = new LemmingsEvolvedClass();
+
+            //Receive input and initialize rows in the game
             for(int l = 0; l <NUMBER_OF_LINES; l++) {
                 int numberOfLemmingsInCurrentRow = Integer.parseInt(in.readLine());
                 game.initializeNRow(l, numberOfLemmingsInCurrentRow);
@@ -21,8 +33,11 @@ public class Main {
                     game.addLemming(l,p,lemming[0].charAt(0),Integer.parseInt(lemming[1]));
                 }
             }
+
+            //Compute and print the results
             game.solveProblem();
-            System.out.println(game.maxScore() + " " + game.minPairs());
+            long[] ans = game.answer();
+            System.out.println(ans[0] + " " + ans[1]);
         }
     }
 }

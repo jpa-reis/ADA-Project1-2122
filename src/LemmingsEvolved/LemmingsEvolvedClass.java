@@ -1,25 +1,30 @@
-public class LemmingsEvolved {
+package LemmingsEvolved;
 
+/**
+ * ADA First Project - Lemmings Evolved
+ * @author Joao Tiago Duarte dos Santos 57957
+ * @author Joao Pedro Araujo dos Reis 58175
+ */
+
+public class LemmingsEvolvedClass implements LemmingsEvolved {
+
+    
     /*
-    This two arrays save the information related to the Lemmings in the first line of the trial.
-    The tribe and the power of a Lemming are saved on different arrays for better performance.
-    The first Lemming is stored at position 1 (position 0 of both arrays is not used).
+    * Both rows of lemmings have the same data structures and logic.
+    *
+    * THE FIRST LEMMING IS STORED AT POSITION 1 (position 0 of both arrays is not used).
+    * The information relative to each lemming is stored in a position of both arrays. One array for the tribe,
+    * one for the power.
     */
     private char[] line1Tribes;
     private long[] line1Powers;
-    //Amount of Lemmings in the first line
-    private int firstLineSize;
 
-    /*
-    This two arrays save the information related to the Lemmings in the second line of the trial.
-    The tribe and the power of a Lemming are saved on different arrays for better performance.
-    The first Lemming is stored at position 1 (position 0 of both arrays is not used).
-    */
     private char[] line2Tribes;
     private long[] line2Powers;
-    //Amount of Lemmings in the second line
-    private int secondLineSize;
 
+    //Size of each line
+    private int firstLineSize;
+    private int secondLineSize;
 
     /*
     Matrix that saves the maximum score possible for the first x Lemmings in the first line and the first y Lemmings in
@@ -39,10 +44,10 @@ public class LemmingsEvolved {
 
 
 
-    public LemmingsEvolved(){}
+    public LemmingsEvolvedClass(){}
 
     /**
-     * initializes the arrays for one line of Lemmings
+     * Initializes the arrays for one line of Lemmings
      * @param lineNumber: line to be initialized (==0 if first line, ==1 if second line)
      * @param lineSize: size of the line to be initialized
      */
@@ -61,7 +66,7 @@ public class LemmingsEvolved {
 
     /**
      * Adds one Lemming to a line
-     * @param lineNumber: line to be initialized (==0 if first line, ==1 if second line)
+     * @param lineNumber: line for the Lemming to be added (==0 if first line, ==1 if second line)
      * @param positionInLine: position of the Lemming in the line
      * @param tribe: tribe of the Lemming
      * @param power: power of the Lemming
@@ -123,17 +128,11 @@ public class LemmingsEvolved {
     }
 
     /**
-     * @return maximum score for the given problem
+     * @return array with the maximum score[0] and the minimum amount of pairs of Lemmings[1]
+     * needed to achieve the maximum score
      */
-    public long maxScore(){
-        return maxScores[firstLineSize][secondLineSize];
-    }
-
-    /**
-     * @return minimum amount of pairs of Lemmings needed to achieve the maximum score for the given problem
-     */
-    public long minPairs(){
-        return minPairs[firstLineSize][secondLineSize];
+    public long[] answer(){
+        return new long[]{maxScores[firstLineSize][secondLineSize], minPairs[firstLineSize][secondLineSize]};
     }
 
 }
